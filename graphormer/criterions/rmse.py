@@ -46,20 +46,14 @@ class SID(FairseqCriterion):
         #print(values.shape)
         label = sample['target'] 
         #loss = self.sid(values, label)
-        values = values.squeeze(1)
-        loss = self.rmse(values, label)
+        mu, std = values
+        mu = mu.squeeze()
+        std = std.squeeze()
+        label=label.squeeze()
 
-        # print(values[:10], 'values')
-        # print(label[:10])dd
-        # print(loss)
-        # exit()
-        # print(loss, 'loss')
-        # exit()
-    
-        # print("Hi this is patrick")
-        # exit()dd
+        loss = self.log_loss(mu, std, label) * 1000
 
-        
+
         logging_output = {
             "loss": loss,
             "sample_size": 1,
@@ -93,6 +87,15 @@ class SID(FairseqCriterion):
         """
         return True
 
+
+    def log_loss(self, mu, std, target):
+        std = std.float() + 5e-3 ## adding a residual to help with numerical stability in early epochs. 
+        mu = mu.float()
+        target = target.float()
+        loss = ((mu - target)**2 / (2 * std**2) +std) ## s13321-019-0374-3 
+        loss = torch.mean(loss)
+
+        return loss
 
     def rmse(self, model, target):
         loss = torch.sqrt(torch.mean((model-target)**2))

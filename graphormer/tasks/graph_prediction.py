@@ -151,6 +151,7 @@ class GraphPredictionTask(FairseqTask):
                     test_idx=dataset_dict["test_idx"],
                     seed=cfg.seed)
             else:
+                print(cfg.user_data_dir)
                 raise ValueError(f"dataset {cfg.dataset_name} is not found in customized dataset module {cfg.user_data_dir}")
         else:
             self.dm = GraphormerDataset(
@@ -334,13 +335,15 @@ class GraphPredictionWithFlagTask(GraphPredictionTask):
         #     )
         # perturb.requires_grad_()
         # sample["perturb"] = perturb
+
         with torch.cuda.amp.autocast(enabled=(isinstance(optimizer, AMPOptimizer))):
             loss, sample_size, logging_output = criterion(
-                model, sample
+                model, sample, update_num
             )
             if ignore_grad:
                 loss *= 0
         loss /= self.flag_m
+
         total_loss = 0
         # for _ in range(self.flag_m - 1):
         #     optimizer.backward(loss)
@@ -366,6 +369,7 @@ class GraphPredictionWithFlagTask(GraphPredictionTask):
         #         if ignore_grad:
         #             loss *= 0
         #     loss /= self.flag_m
+
         optimizer.backward(loss)
         total_loss += loss.detach()
         logging_output["loss"] = total_loss

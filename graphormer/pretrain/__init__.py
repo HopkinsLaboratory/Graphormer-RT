@@ -11,7 +11,8 @@ PRETRAINED_MODEL_URLS = {
 }
 
 def load_pretrained_model(pretrained_model_name):
-    pretrained_model = load('/home/cmkstien/Graphormer_RT_extra/best_MODEL_ext/seeds/external_out_final_cbest/' + pretrained_model_name)
+    pretrained_model = load(pretrained_model_name)
+    # pretrained_model = load('/home/cmkstien/Graphormer_RT_extra/best_MODEL_ext/seeds/external_out_final_cbest/' + pretrained_model_name)
     print(pretrained_model['model'].keys())
     print(pretrained_model['model']['encoder.graph_encoder.graph_node_feature.float_encoder.0.0.weight'])
     # if pretrained_model_name not in PRETRAINED_MODEL_URLS:

@@ -5,7 +5,8 @@
 #
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
-
+import numpy as np
+import os
 import logging
 import matplotlib.pyplot as plt
 import torch
@@ -35,7 +36,6 @@ import pickle
 logger = logging.getLogger()
 logger.setLevel(20)
 
-
 @register_model("graphormer")
 class GraphormerModel(FairseqEncoderModel):
     def __init__(self, args, encoder):
@@ -48,7 +48,68 @@ class GraphormerModel(FairseqEncoderModel):
         if args.pretrained_model_name != "none":
             self.load_state_dict(load_pretrained_model(args.pretrained_model_name))
 
+        i = 0
+        # self.freeze_feature_encoder = args.freeze_feature_encoder
+        # print(self.freeze_feature_encoder)
+        self.freeze_feature_encoder = False
+        self.freeze_atom_encoder = False
+        if self.freeze_atom_encoder:
+            for child in self.encoder.graph_encoder.graph_node_feature.float_encoder.children():
+                for param in child.parameters():
+                    param.requires_grad = False
 
+        if self.freeze_feature_encoder:
+            for child in self.encoder.graph_encoder.graph_node_feature.column_int_encoder.children(): # TODO: validate this is the right encoder
+                    for param in child.parameters():
+                        param.requires_grad = False
+            for child in self.encoder.graph_encoder.graph_node_feature.column_float_encoder.children():
+                    for param in child.parameters():
+                        param.requires_grad = False
+        
+        self.freeze_condifence = False
+        
+        if self.freeze_condifence:
+            for child in self.encoder.mu_list.children():
+                for param in child.parameters():
+                    param.requires_grad = False
+             
+            for child in self.encoder.mu_out.children():
+                for param in child.parameters():
+                    param.requires_grad = False
+                # i+=1
+        self.freeze_level = args.freeze_level
+        
+        c = self.freeze_level
+        if c == 0: ## Do nothing
+            x = ':)'
+            print(x)
+        elif c < 0 : ## Freeze encoder layers (from the)
+            for child in self.encoder.graph_encoder.layers.children():
+                if c < 0:
+                    for param in child.parameters():
+                        param.requires_grad = False
+                    c+=1
+                else:
+                    c+=1
+        elif self.freeze_level > 0: ## Freeze MLP layers: TODO: Implement for encoder head as well (third MLP layer)
+            for child in self.encoder.layer_list.children():
+                for param in child.parameters():
+                    param.requires_grad = False
+                print('HELLO')
+                exit()
+                c-=1
+                if c == 0:
+                    break
+        # c = 0
+        # for child in self.encoder.mu_list.children():
+        #     print(c, '***************')
+
+        #     for param in child.parameters():
+        #         print(param.requires_grad)
+        #         break
+        #     print('***************')
+        #     c+=1
+        # exit()
 
 
         if not args.load_pretrained_model_output_layer:
@@ -151,6 +212,20 @@ class GraphormerModel(FairseqEncoderModel):
             help="apply layernorm before self-attention and ffn. Without this, post layernorm will used",
         )
 
+        parser.add_argument(
+            "--freeze-level",
+            type=int,
+            help="freeze layers in the model",
+            default=0,
+        )
+        parser.add_argument(
+            "--save-path",
+            type=str,
+            help='If you want to save prediction results',
+            default='None'
+
+        )
+
     def max_nodes(self):
         return self.encoder.max_nodes
 
@@ -206,7 +281,7 @@ class GraphormerEncoder(FairseqEncoder):
         self.embed_out = None
         self.lm_output_learned_bias = None
         self.layer_list = torch.nn.ModuleList()
-
+        self.mu_list = torch.nn.ModuleList()
         # Remove head is set to true during fine-tuning
         self.load_softmax = not getattr(args, "remove_head", False)
         latent_size = args.encoder_embed_dim
@@ -226,14 +301,16 @@ class GraphormerEncoder(FairseqEncoder):
         #         # last = latent_size
         p = 0.10
         for i in range(self.layers - 1):
-                ln = nn.Linear(
-                latent_size,latent_size)
-                nn.init.xavier_normal_(ln.weight)
-                # dropout = nn.Dropout(p=0.10)
-                # relu = nn.ReLU()
-                self.layer_list.append(ln)
-                # self.layer_list.append(dropout)
-                # self.layer_list.append(relu)
+            ln = nn.Linear(
+            latent_size,latent_size)
+            # nn.init.xavier_normal_(ln.weight)
+            self.layer_list.append(ln)
+        for i in range(self.layers - 1):
+            mu = nn.Linear(
+            latent_size,latent_size)
+            nn.init.xavier_normal_(mu.weight)
+            self.mu_list.append(mu)
+    
 
         kernel = 40 
         self.isconv = False ## turn this to true if you want to test a 1D smoothing CNN
@@ -245,11 +322,18 @@ class GraphormerEncoder(FairseqEncoder):
         else:
             self.embed_out =nn.Linear(
                         latent_size, args.num_classes,bias=True)#+ kernel - 1, )
+            self.mu_out = nn.Linear(
+                        latent_size, args.num_classes,bias=True)
             # self.embed_out =nn.Linear(
             #     last, args.num_classes,bias=True)#+ kernel - 1, )
-            nn.init.xavier_normal_(self.embed_out.weight)
-            self.embed_out.bias.data = torch.ones(args.num_classes) * 1000
-            self.embed_out.bias.requires_grad = True
+            # nn.init.xavier_normal_(self.embed_out.weight)
+            # nn.init.xavier_normal_(self.mu_out.weight)
+
+            # self.embed_out.bias.data = torch.ones(args.num_classes) * 100000
+            # self.embed_out.bias.requires_grad = True
+
+            # self.mu_out.bias.data = torch.ones(args.num_classes) * 1000000
+            # self.mu_out.bias.requires_grad = True
 
 
         self.conv = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=kernel)
@@ -258,13 +342,6 @@ class GraphormerEncoder(FairseqEncoder):
         if self.load_softmax:
             self.lm_output_learned_bias = nn.Parameter(torch.zeros(1))
 
-            # if not self.share_input_output_embed:
-            #     self.embed_out = nn.Linear(
-            #         args.encoder_embed_dim, args.num_classes, bias=False
-            #     )
-
-            # else:
-            #     raise NotImplementedError
 
     def reset_output_layer_parameters(self):
         self.lm_output_learned_bias = nn.Parameter(torch.zeros(1))
@@ -278,24 +355,31 @@ class GraphormerEncoder(FairseqEncoder):
             batched_data,
             perturb=perturb,
         )
+        x = inner_states[-1].transpose(0, 1)[:,0,:] ## grabs graph/mCLS token token 
 
-        x = inner_states[-1].transpose(0, 1)[:,0,:] ## grabs graph token 
+        # graph_token = inner_states[-1].transpose(0, 1)[:,0,:]
+        # sm = batched_data['smiles']
 
+
+        y = x.clone()
         if masked_tokens is not None:
             raise NotImplementedError
 
         for i, layer in enumerate(self.layer_list): #
-
-            x = layer(x) #
+            x = layer(x)
             x = F.relu(x) 
+        for i, layer in enumerate(self.mu_list): #
+            y = layer(y)
+            y = F.relu(y)
 
         x = self.embed_out(x)
-        # x = F.relu(x)
+        x = F.relu(x)
+        y = self.mu_out(y)
 
+        y = F.relu(y) 
         x = torch.unsqueeze(x, 1)
-        # gc.collect()
-        return x
-
+        y = torch.unsqueeze(y, 1)
+        return (x,y)
 
     def max_nodes(self):
         """Maximum output length supported by the encoder."""

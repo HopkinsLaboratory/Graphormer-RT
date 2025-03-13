@@ -1,0 +1,67 @@
+2025-03-13 17:38:09 | INFO | fairseq.trainer | begin training epoch 1
+2025-03-13 17:38:09 | INFO | fairseq_cli.train | Start iterating over samples
+2025-03-13 17:38:09 | INFO | fairseq_cli.train | begin validation on "valid" subset
+2025-03-13 17:38:10 | INFO | valid | epoch 001 | valid on 'valid' subset | loss 11056 | accuracy 0 | wps 87.1 | wpb 1 | bsz 1 | num_updates 2
+2025-03-13 17:38:10 | INFO | fairseq.checkpoint_utils | Preparing to save checkpoint for epoch 1 @ 2 updates
+2025-03-13 17:38:10 | INFO | fairseq.trainer | Saving checkpoint to ../../checkpoints/checkpoint_best.pt
+2025-03-13 17:38:10 | INFO | fairseq.trainer | Finished saving checkpoint to ../../checkpoints/checkpoint_best.pt
+2025-03-13 17:38:10 | INFO | fairseq.checkpoint_utils | Saved checkpoint ../../checkpoints/checkpoint_best.pt (epoch 1 @ 2 updates, score 11056.0) (writing took 0.21735431998968124 seconds)
+2025-03-13 17:38:10 | INFO | fairseq_cli.train | end of epoch 1 (average epoch stats below)
+2025-03-13 17:38:10 | INFO | train | epoch 001 | loss 3008 | accuracy 0 | wps 1.3 | ups 1.29 | wpb 1 | bsz 1 | num_updates 2 | lr 5.08475e-06 | gnorm 0 | clip 0 | loss_scale 128 | train_wall 0 | gb_free 22.1 | wall 5
+epoch 002:  50%|█████████████████████████████████████████████████████████████████▌                                                                 | 1/2 [00:00<00:00,  1.85it/s]
+2025-03-13 17:38:10 | INFO | fairseq.data.iterators | grouped total_num_itrs = 2
+2025-03-13 17:38:10 | INFO | fairseq.trainer | begin training epoch 2
+2025-03-13 17:38:10 | INFO | fairseq_cli.train | Start iterating over samples
+2025-03-13 17:38:11 | INFO | fairseq_cli.train | begin validation on "valid" subset
+2025-03-13 17:38:12 | INFO | valid | epoch 002 | valid on 'valid' subset | loss 11056 | accuracy 0 | wps 94.2 | wpb 1 | bsz 1 | num_updates 4 | best_loss 11056
+2025-03-13 17:38:12 | INFO | fairseq.checkpoint_utils | Preparing to save checkpoint for epoch 2 @ 4 updates
+2025-03-13 17:38:12 | INFO | fairseq.trainer | Saving checkpoint to ../../checkpoints/checkpoint_best.pt
+2025-03-13 17:38:12 | INFO | fairseq.trainer | Finished saving checkpoint to ../../checkpoints/checkpoint_best.pt
+2025-03-13 17:38:12 | INFO | fairseq.checkpoint_utils | Saved checkpoint ../../checkpoints/checkpoint_best.pt (epoch 2 @ 4 updates, score 11056.0) (writing took 0.37861534603871405 seconds)
+2025-03-13 17:38:12 | INFO | fairseq_cli.train | end of epoch 2 (average epoch stats below)
+2025-03-13 17:38:12 | INFO | train | epoch 002 | loss 3008 | accuracy 0 | wps 1.1 | ups 1.09 | wpb 1 | bsz 1 | num_updates 4 | lr 1.01695e-05 | gnorm 0 | clip 0 | loss_scale 128 | train_wall 0 | gb_free 22.1 | wall 7
+2025-03-13 17:38:12 | INFO | fairseq.data.iterators | grouped total_num_itrs = 2
+2025-03-13 17:38:12 | INFO | fairseq.trainer | begin training epoch 3
+epoch 003:  50%|█████████████████████████████████████████████████████████████████▌                                                                 | 1/2 [00:00<00:00,  1.46it/s]
+epoch 003 | valid on 'valid' subset:   0%|                                                                                                                 | 0/2 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/linecache.py", line 46, in getlines
+    return updatecache(filename, module_globals)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/linecache.py", line 136, in updatecache
+    with tokenize.open(fullname) as fp:
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/tokenize.py", line 394, in open
+    encoding, lines = detect_encoding(buffer.readline)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/tokenize.py", line 363, in detect_encoding
+    first = read_or_stop()
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/tokenize.py", line 321, in read_or_stop
+    return readline()
+KeyboardInterrupt
+Original exception was:
+Traceback (most recent call last):
+  File "/home/cmkstien/anaconda3/envs/graphormer/bin/fairseq-train", line 8, in <module>
+    sys.exit(cli_main())
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq_cli/train.py", line 528, in cli_main
+    distributed_utils.call_main(cfg, main)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq/distributed/utils.py", line 369, in call_main
+    main(cfg, **kwargs)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq_cli/train.py", line 188, in main
+    valid_losses, should_stop = train(cfg, trainer, task, epoch_itr)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq_cli/train.py", line 317, in train
+    valid_losses, should_stop = validate_and_save(
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq_cli/train.py", line 408, in validate_and_save
+    valid_losses = validate(cfg, trainer, task, epoch_itr, valid_subsets)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq_cli/train.py", line 475, in validate
+    for i, sample in enumerate(progress):
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/tqdm/std.py", line 1178, in __iter__
+    for obj in iterable:
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq/data/iterators.py", line 56, in __next__
+    x = next(self._itr)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/site-packages/fairseq/data/iterators.py", line 688, in __next__
+    item = self._queue.get(True)
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/queue.py", line 171, in get
+    self.not_empty.wait()
+  File "/home/cmkstien/anaconda3/envs/graphormer/lib/python3.9/threading.py", line 312, in wait
+    waiter.acquire()
+KeyboardInterrupt

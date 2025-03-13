@@ -1,0 +1,14 @@
+2025-03-13 17:38:13,414 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Configure stats pid to 1694591
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Loading settings from /home/cmkstien/.config/wandb/settings
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Loading settings from /home/cmkstien/RT_pub/Graphormer_RT/examples/property_prediction/wandb/settings
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2025-03-13 17:38:13,415 WARNING MainThread:1694591 [wandb_setup.py:_flush():76] Could not save program above cwd: /home/cmkstien/anaconda3/envs/graphormer/bin/fairseq-train
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': None, 'program_abspath': '/home/cmkstien/anaconda3/envs/graphormer/bin/fairseq-train', 'program': '/home/cmkstien/anaconda3/envs/graphormer/bin/fairseq-train'}
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_init.py:_log_setup():524] Logging user logs to /home/cmkstien/RT_pub/Graphormer_RT/examples/property_prediction/wandb/run-20250313_173813-0ljsfnyp/logs/debug.log
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_init.py:_log_setup():525] Logging internal logs to /home/cmkstien/RT_pub/Graphormer_RT/examples/property_prediction/wandb/run-20250313_173813-0ljsfnyp/logs/debug-internal.log
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_init.py:init():564] calling init triggers
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2025-03-13 17:38:13,415 INFO    MainThread:1694591 [wandb_init.py:init():609] wandb.init() called when a run is still active

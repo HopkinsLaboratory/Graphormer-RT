@@ -32,7 +32,7 @@ class SID(FairseqCriterion):
         self.eps = 1e-8
         self.torch_device = 'cuda'
 
-    def forward(self, model, sample, reduce=True):
+    def forward(self, model, sample, update_num=10, reduce=True):
         """Compute the loss for the given sample.
         Returns a tuple with three elements:
         1) the loss
@@ -43,22 +43,15 @@ class SID(FairseqCriterion):
         sample_size = sample["nsamples"]
         #print(sample_size)
         values = model(**sample["net_input"])
-        #print(values.shape)
         label = sample['target'] 
         #loss = self.sid(values, label)
-        values = values.squeeze(1)
-        loss = self.rmse(values, label)
+        mu =  values
 
-        # print(values[:10], 'values')
-        # print(label[:10])dd
-        # print(loss)
-        # exit()
-        # print(loss, 'loss')
-        # exit()
-    
-        # print("Hi this is patrick")
-        # exit()dd
+        mu = mu.squeeze()
+        # std = std.squeeze()
+        label=label.squeeze()
 
+        loss = self.rmse(mu, label)
         
         logging_output = {
             "loss": loss,
@@ -93,8 +86,17 @@ class SID(FairseqCriterion):
         """
         return True
 
+    def log_loss(self, mu, std, target):
+        std = std.float() + 5e-2 ## adding a residual to help with numerical stability in early epochs. 
+        mu = mu.float()
+        target = target.float()
+        loss = ((mu - target)**2 / (2 * std**2) +std) * 1000 ## s13321-019-0374-3 
+
+        loss = torch.mean(loss)
+        return loss
 
     def rmse(self, model, target):
         loss = torch.sqrt(torch.mean((model-target)**2))
 
         return loss * 1000
+

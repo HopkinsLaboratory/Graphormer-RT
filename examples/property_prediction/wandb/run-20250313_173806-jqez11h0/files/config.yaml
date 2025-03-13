@@ -1,0 +1,554 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.18
+    cli_version: 0.16.0
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1741901886.694291
+    t:
+      1:
+      - 1
+      - 5
+      - 50
+      - 53
+      - 55
+      - 64
+      - 76
+      - 77
+      2:
+      - 1
+      - 5
+      - 50
+      - 53
+      - 55
+      - 64
+      - 76
+      - 77
+      3:
+      - 13
+      - 23
+      - 24
+      4: 3.9.18
+      5: 0.16.0
+      8:
+      - 5
+      13: linux-x86_64
+_name:
+  desc: null
+  value: null
+common:
+  desc: null
+  value:
+    _name: null
+    no_progress_bar: false
+    log_interval: 100
+    log_format: null
+    log_file: null
+    tensorboard_logdir: null
+    wandb_project: RT_preds
+    azureml_logging: false
+    seed: 23
+    cpu: false
+    tpu: false
+    bf16: false
+    memory_efficient_bf16: false
+    fp16: true
+    memory_efficient_fp16: false
+    fp16_no_flatten_grads: false
+    fp16_init_scale: 128
+    fp16_scale_window: null
+    fp16_scale_tolerance: 0.0
+    on_cpu_convert_precision: false
+    min_loss_scale: 1.0e-09
+    threshold_loss_scale: null
+    amp: false
+    amp_batch_retries: 2
+    amp_init_scale: 128
+    amp_scale_window: null
+    user_dir: ../../graphormer
+    empty_cache_freq: 0
+    all_gather_list_size: 16384
+    model_parallel_size: 1
+    quantization_config_path: null
+    profile: false
+    reset_logging: false
+    suppress_crashes: false
+    use_plasma_view: false
+    plasma_path: /tmp/plasma
+common_eval:
+  desc: null
+  value:
+    _name: null
+    path: null
+    post_process: null
+    quiet: false
+    model_overrides: '{}'
+    results_path: null
+distributed_training:
+  desc: null
+  value:
+    _name: null
+    distributed_world_size: 1
+    distributed_num_procs: 1
+    distributed_rank: 0
+    distributed_backend: nccl
+    distributed_init_method: null
+    distributed_port: -1
+    device_id: 0
+    distributed_no_spawn: false
+    ddp_backend: legacy_ddp
+    ddp_comm_hook: none
+    bucket_cap_mb: 25
+    fix_batches_to_gpus: false
+    find_unused_parameters: false
+    gradient_as_bucket_view: false
+    fast_stat_sync: false
+    heartbeat_timeout: -1
+    broadcast_buffers: false
+    slowmo_momentum: null
+    slowmo_base_algorithm: localsgd
+    localsgd_frequency: 3
+    nprocs_per_node: 1
+    pipeline_model_parallel: false
+    pipeline_balance: null
+    pipeline_devices: null
+    pipeline_chunks: 0
+    pipeline_encoder_balance: null
+    pipeline_encoder_devices: null
+    pipeline_decoder_balance: null
+    pipeline_decoder_devices: null
+    pipeline_checkpoint: never
+    zero_sharding: none
+    fp16: true
+    memory_efficient_fp16: false
+    tpu: false
+    no_reshard_after_forward: false
+    fp32_reduce_scatter: false
+    cpu_offload: false
+    use_sharded_state: false
+    not_fsdp_flatten_parameters: false
+dataset:
+  desc: null
+  value:
+    _name: null
+    num_workers: 20
+    skip_invalid_size_inputs_valid_test: false
+    max_tokens: null
+    batch_size: 64
+    required_batch_size_multiple: 8
+    required_seq_len_multiple: 1
+    dataset_impl: null
+    data_buffer_size: 10
+    train_subset: train
+    valid_subset: valid
+    combine_valid_subsets: null
+    ignore_unused_valid_subsets: false
+    validate_interval: 1
+    validate_interval_updates: 0
+    validate_after_updates: 0
+    fixed_validation_seed: null
+    disable_validation: false
+    max_tokens_valid: null
+    batch_size_valid: 64
+    max_valid_steps: null
+    curriculum: 0
+    gen_subset: test
+    num_shards: 1
+    shard_id: 0
+    grouped_shuffling: false
+    update_epoch_batch_itr: false
+    update_ordered_indices_seed: false
+optimization:
+  desc: null
+  value:
+    _name: null
+    max_epoch: 250
+    max_update: 0
+    stop_time_hours: 0.0
+    clip_norm: 5.0
+    sentence_avg: false
+    update_freq:
+    - 1
+    lr:
+    - 0.00015
+    stop_min_lr: -1.0
+    use_bmuf: false
+    skip_remainder_batch: false
+checkpoint:
+  desc: null
+  value:
+    _name: null
+    save_dir: ../../checkpoints
+    restore_file: checkpoint_last.pt
+    finetune_from_model: null
+    reset_dataloader: false
+    reset_lr_scheduler: false
+    reset_meters: false
+    reset_optimizer: false
+    optimizer_overrides: '{}'
+    save_interval: 1
+    save_interval_updates: 0
+    keep_interval_updates: -1
+    keep_interval_updates_pattern: -1
+    keep_last_epochs: -1
+    keep_best_checkpoints: -1
+    no_save: false
+    no_epoch_checkpoints: true
+    no_last_checkpoints: false
+    no_save_optimizer_state: false
+    best_checkpoint_metric: loss
+    maximize_best_checkpoint_metric: false
+    patience: -1
+    checkpoint_suffix: ''
+    checkpoint_shard_count: 1
+    load_checkpoint_on_all_dp_ranks: false
+    write_checkpoints_asynchronously: false
+    model_parallel_size: 1
+bmuf:
+  desc: null
+  value:
+    _name: null
+    block_lr: 1.0
+    block_momentum: 0.875
+    global_sync_iter: 50
+    warmup_iterations: 500
+    use_nbm: false
+    average_sync: false
+    distributed_world_size: 1
+generation:
+  desc: null
+  value:
+    _name: null
+    beam: 5
+    nbest: 1
+    max_len_a: 0.0
+    max_len_b: 200
+    min_len: 1
+    match_source_len: false
+    unnormalized: false
+    no_early_stop: false
+    no_beamable_mm: false
+    lenpen: 1.0
+    unkpen: 0.0
+    replace_unk: null
+    sacrebleu: false
+    score_reference: false
+    prefix_size: 0
+    no_repeat_ngram_size: 0
+    sampling: false
+    sampling_topk: -1
+    sampling_topp: -1.0
+    constraints: null
+    temperature: 1.0
+    diverse_beam_groups: -1
+    diverse_beam_strength: 0.5
+    diversity_rate: -1.0
+    print_alignment: null
+    print_step: false
+    lm_path: null
+    lm_weight: 0.0
+    iter_decode_eos_penalty: 0.0
+    iter_decode_max_iter: 10
+    iter_decode_force_max_iter: false
+    iter_decode_with_beam: 1
+    iter_decode_with_external_reranker: false
+    retain_iter_history: false
+    retain_dropout: false
+    retain_dropout_modules: null
+    decoding_format: null
+    no_seed_provided: false
+eval_lm:
+  desc: null
+  value:
+    _name: null
+    output_word_probs: false
+    output_word_stats: false
+    context_window: 0
+    softmax_batch: 9223372036854775807
+interactive:
+  desc: null
+  value:
+    _name: null
+    buffer_size: 0
+    input: '-'
+task:
+  desc: null
+  value:
+    _name: graph_prediction_with_flag
+    dataset_name: RT_Library
+    num_classes: 1
+    max_nodes: 256
+    dataset_source: pyg
+    num_atoms: 4608
+    num_edges: 1536
+    num_in_degree: 512
+    num_out_degree: 512
+    num_spatial: 512
+    num_edge_dis: 128
+    multi_hop_max_dist: 5
+    spatial_pos_max: 1024
+    edge_type: multi_hop
+    seed: 23
+    pretrained_model_name: none
+    load_pretrained_model_output_layer: false
+    train_epoch_shuffle: false
+    user_data_dir: HILIC_train
+    flag_m: 3
+    flag_step_size: 0.001
+    flag_mag: 0.001
+criterion:
+  desc: null
+  value:
+    _name: rmse_HILIC
+optimizer:
+  desc: null
+  value:
+    _name: adam
+    adam_betas: (0.9, 0.999)
+    adam_eps: 1.0e-08
+    weight_decay: 0.01
+    use_old_adam: false
+    fp16_adam_stats: false
+    tpu: false
+    lr:
+    - 0.00015
+lr_scheduler:
+  desc: null
+  value:
+    _name: polynomial_decay
+    warmup_updates: 59
+    force_anneal: null
+    end_learning_rate: 0.0
+    power: 1.0
+    total_num_update: 391.0
+    lr:
+    - 0.00015
+scoring:
+  desc: null
+  value:
+    _name: bleu
+    pad: 1
+    eos: 2
+    unk: 3
+bpe:
+  desc: null
+  value: null
+tokenizer:
+  desc: null
+  value: null
+ema:
+  desc: null
+  value:
+    _name: null
+    store_ema: false
+    ema_decay: 0.9999
+    ema_start_update: 0
+    ema_seed_model: null
+    ema_update_freq: 1
+    ema_fp32: false
+args:
+  desc: null
+  value:
+    no_progress_bar: false
+    log_interval: 100
+    log_format: null
+    log_file: null
+    tensorboard_logdir: null
+    wandb_project: RT_preds
+    azureml_logging: false
+    seed: 23
+    cpu: false
+    tpu: false
+    bf16: false
+    memory_efficient_bf16: false
+    fp16: true
+    memory_efficient_fp16: false
+    fp16_no_flatten_grads: false
+    fp16_init_scale: 128
+    fp16_scale_window: null
+    fp16_scale_tolerance: 0.0
+    on_cpu_convert_precision: false
+    min_loss_scale: 1.0e-09
+    threshold_loss_scale: null
+    amp: false
+    amp_batch_retries: 2
+    amp_init_scale: 128
+    amp_scale_window: null
+    user_dir: ../../graphormer
+    empty_cache_freq: 0
+    all_gather_list_size: 16384
+    model_parallel_size: 1
+    quantization_config_path: null
+    profile: false
+    reset_logging: false
+    suppress_crashes: false
+    use_plasma_view: false
+    plasma_path: /tmp/plasma
+    criterion: rmse_HILIC
+    tokenizer: null
+    bpe: null
+    optimizer: adam
+    lr_scheduler: polynomial_decay
+    scoring: bleu
+    task: graph_prediction_with_flag
+    num_workers: 20
+    skip_invalid_size_inputs_valid_test: false
+    max_tokens: null
+    batch_size: 64
+    required_batch_size_multiple: 8
+    required_seq_len_multiple: 1
+    dataset_impl: null
+    data_buffer_size: 10
+    train_subset: train
+    valid_subset: valid
+    combine_valid_subsets: null
+    ignore_unused_valid_subsets: false
+    validate_interval: 1
+    validate_interval_updates: 0
+    validate_after_updates: 0
+    fixed_validation_seed: null
+    disable_validation: false
+    max_tokens_valid: null
+    batch_size_valid: 64
+    max_valid_steps: null
+    curriculum: 0
+    gen_subset: test
+    num_shards: 1
+    shard_id: 0
+    grouped_shuffling: false
+    update_epoch_batch_itr: false
+    update_ordered_indices_seed: false
+    distributed_world_size: 1
+    distributed_num_procs: 1
+    distributed_rank: 0
+    distributed_backend: nccl
+    distributed_init_method: null
+    distributed_port: -1
+    device_id: 0
+    distributed_no_spawn: false
+    ddp_backend: legacy_ddp
+    ddp_comm_hook: none
+    bucket_cap_mb: 25
+    fix_batches_to_gpus: false
+    find_unused_parameters: false
+    gradient_as_bucket_view: false
+    fast_stat_sync: false
+    heartbeat_timeout: -1
+    broadcast_buffers: false
+    slowmo_momentum: null
+    slowmo_base_algorithm: localsgd
+    localsgd_frequency: 3
+    nprocs_per_node: 1
+    pipeline_model_parallel: false
+    pipeline_balance: null
+    pipeline_devices: null
+    pipeline_chunks: 0
+    pipeline_encoder_balance: null
+    pipeline_encoder_devices: null
+    pipeline_decoder_balance: null
+    pipeline_decoder_devices: null
+    pipeline_checkpoint: never
+    zero_sharding: none
+    no_reshard_after_forward: false
+    fp32_reduce_scatter: false
+    cpu_offload: false
+    use_sharded_state: false
+    not_fsdp_flatten_parameters: false
+    arch: graphormer_HILIC
+    max_epoch: 250
+    max_update: 0
+    stop_time_hours: 0
+    clip_norm: 5.0
+    sentence_avg: false
+    update_freq:
+    - 1
+    lr:
+    - 0.00015
+    stop_min_lr: -1.0
+    use_bmuf: false
+    skip_remainder_batch: false
+    save_dir: ../../checkpoints
+    restore_file: checkpoint_last.pt
+    finetune_from_model: null
+    reset_dataloader: false
+    reset_lr_scheduler: false
+    reset_meters: false
+    reset_optimizer: false
+    optimizer_overrides: '{}'
+    save_interval: 1
+    save_interval_updates: 0
+    keep_interval_updates: -1
+    keep_interval_updates_pattern: -1
+    keep_last_epochs: -1
+    keep_best_checkpoints: -1
+    no_save: false
+    no_epoch_checkpoints: true
+    no_last_checkpoints: false
+    no_save_optimizer_state: false
+    best_checkpoint_metric: loss
+    maximize_best_checkpoint_metric: false
+    patience: -1
+    checkpoint_suffix: ''
+    checkpoint_shard_count: 1
+    load_checkpoint_on_all_dp_ranks: false
+    write_checkpoints_asynchronously: false
+    store_ema: false
+    ema_decay: 0.9999
+    ema_start_update: 0
+    ema_seed_model: null
+    ema_update_freq: 1
+    ema_fp32: false
+    freeze_level: 0
+    save_path: None
+    dataset_name: RT_Library
+    num_classes: 1
+    max_nodes: 256
+    dataset_source: pyg
+    num_atoms: 4608
+    num_edges: 1536
+    num_in_degree: 512
+    num_out_degree: 512
+    num_spatial: 512
+    num_edge_dis: 128
+    multi_hop_max_dist: 5
+    spatial_pos_max: 1024
+    edge_type: multi_hop
+    pretrained_model_name: none
+    load_pretrained_model_output_layer: false
+    train_epoch_shuffle: false
+    user_data_dir: HILIC_train
+    flag_m: 3
+    flag_step_size: 0.001
+    flag_mag: 0.001
+    adam_betas: (0.9, 0.999)
+    adam_eps: 1.0e-08
+    weight_decay: 0.01
+    use_old_adam: false
+    fp16_adam_stats: false
+    warmup_updates: 59
+    force_anneal: null
+    end_learning_rate: 0.0
+    power: 1.0
+    total_num_update: '391'
+    pad: 1
+    eos: 2
+    unk: 3
+    attention_dropout: 0.1
+    act_dropout: 0.1
+    dropout: 0.1
+    encoder_layers: 8
+    encoder_embed_dim: 512
+    encoder_ffn_embed_dim: 512
+    encoder_attention_heads: 64
+    mlp_layers: 5
+    no_seed_provided: false
+    share_encoder_input_output_embed: false
+    no_token_positional_embeddings: false
+    apply_graphormer_init: false
+    activation_fn: gelu
+    encoder_normalize_before: true
+    _name: graphormer_HILIC

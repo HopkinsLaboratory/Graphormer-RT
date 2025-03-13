@@ -29,6 +29,7 @@ solvs = ['h2o','meoh', 'acn', 'Other']
 HPLC_type = ['RP', 'HILIC', 'Other']
 lengths = ['0','50', '100','150', '200', '250', 'Other']
 
+
 def one_hot_lengths(length):
     one_hot = [0] * len(lengths)
     one_hot[lengths.index(length)] = 1
@@ -120,77 +121,37 @@ def featurize_column(column_params, index):
     hsmb_params = column_params[92:]
     hsmb_params = [0 if param == '' else float(param) for param in hsmb_params] ## TODO: add these in
 
-    ##TODO: normalize tanaka params somehow
-    ## COARSE NORMALIZATION BASED ON VALUES - coarse normalization didn't help
+
     kPB = tanaka_params[1] # / 10     
     a_CH2 = tanaka_params[2]# / 2
     a_TO = tanaka_params[3]# / 5
     a_CP = tanaka_params[4]
     a_BP = tanaka_params[5] #/ 2 
     a_BP1 = tanaka_params[6] #/ 2
-    # particle_size = tanaka_params[7] #/ 5
     
     tanaka_params = [kPB, a_CH2, a_TO, a_CP, a_BP, a_BP1, part_size]
-    # tanaka_params = [param +1 for param in tanaka_params]
 
     add_A_vals = np.ceil(list(map(float, add_A[::2]))) 
     add_B_vals = np.ceil(list(map(float, add_B[::2]))) 
 
 
-    ## get rid of this to recover values. 
-    # add_A_vals = np.where(add_A_vals != 0, 1, add_A_vals)
-    # add_B_vals = np.where(add_B_vals != 0, 1, add_B_vals)
-
-
     add_A_units = add_A[1::2]
     add_B_units = add_B[1::2]
-    # if index == '0186':
-    #     print(len(add_A_vals), len(add_B_vals), len(company), len(USP), len(HPLC_type), len(solv_A), len(solv_B), len(add_A_vals), len(add_B_vals))
-    # if index == '0126':
-    #     print(len(add_A_vals), len(add_B_vals), len(company), len(USP), len(HPLC_type), len(solv_A), len(solv_B), len(add_A_vals), len(add_B_vals))
-    #     exit()
-
-    # tanaka_params = [param + 5 for param in tanaka_params]
-    # hsmb_params = [param + 5 for param in hsmb_params]
-    # float_encodings = [diameter, part_size, start_B, t1, B1, t2, B2, t3, temp, pH_A, pH_B,] # float encodings ## ADD slopes()
 
     float_encodings = [diameter, part_size, start_B, t1, B1, t2, B2, t3, B3, pH_A, pH_B, dead, temp, fl, length] 
-    # print(float_encodings)
-    # exit()
-    ## ADD TEMP IN TO ENCODINGS????? ADD DEAD VOLUME?? WHAT TODO:
+
     float_encodings += tanaka_params
     float_encodings += hsmb_params
-    # print(len(float_encodings))
     int_encodings = np.concatenate([[-2],company, USP, solv_A, solv_B, add_A_vals, add_B_vals])
-    # print(float_encodings)
-    # print(len(float_encodings), "FLOAT ENCODINGS")
-    # print(len(int_encodings), "INT ENCODINGS")
-    # print(len(company), len(USP), len(solv_A), len(solv_B), len(add_A_vals), len(add_B_vals), "INT ENCODINGS")
 
-    # print(len(int_encodings))
-    # 6 7 6 3 3 15 15
-    # 56
-    # exit()
-    
-    # assert max(float_encodings) <= 1 and min(float_encodings) >= 0
     features = np.concatenate((int_encodings, float_encodings))
-    # print(list(int_encodings))
-    # exit()
-    # print(len(features))
-    # exit()
-    # int_features = features[56:] 
-    # float_features = features[1:56]
-    # features = np.pad(features, (0, 100 - len(features))) ## 67 before padding
-    # print(features)
-    # exit()
-    # print(len(features), "FEATURES")
+
     return features
 
-    
 class IRSpectraD(DGLDataset):
     def __init__(self):
         self.mode = ":("
-        self.save_path_2 = '/home/weeb/shit/Graphormer/examples/property_prediction/training_dataset/'
+
         ## atom encodings
         atom_type_onehot = [
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -333,7 +294,7 @@ class IRSpectraD(DGLDataset):
             count +=1
 
         self.num_classes = 1801
-        super().__init__(name='IR Spectra', save_dir='/home/weeb/shit/Graphormer/examples/property_prediction/training_dataset/') 
+        self.process()
 
     def process(self):
         
@@ -341,54 +302,24 @@ class IRSpectraD(DGLDataset):
         self.labels = []
         self.smiles = []
 
-        
-        with open('/home/cmkstien/Desktop/RT_data/HILIC/HILIC_metadata.pickle', 'rb') as handle: ## used for global node hash encodings
+        print("I'm in the right file")
+        with open('../../sample_data/HILIC_metadata.pickle', 'rb') as handle: 
             self.columndict = pickle.load(handle) 
 
-            
-        print("I'm in the right file")
-        x = import_data(r'/home/cmkstien/Desktop/RT_data/HILIC/true_external/splits/99_test.csv')
-        y = import_data(r'/home/cmkstien/Desktop/RT_data/HILIC/true_external/HILIC_external_methodsAug30.csv')
-        x.extend(y) ## y is 203
-        # print(len(y))
-        # exit()
-
-        gnode = True ## Turns off global node
+        x = import_data(r'../../sample_data/Finetune_0185_HILIC.csv')
         count = 0
-        count_hash = 0
-        companies = []
         for i in tqdm(x):
+            sm = str(i[1]).replace("Q", "#") ##
 
-            # descriptors = [i[idx] for idx in subset_indices]
-            # descriptors = i[4:]
-            # # descriptors = np.insert(descriptors, 0, -3)
-            # descriptors = np.asarray(descriptors)
-            # descriptors[descriptors == 'Broken'] = 0.01
-
-            # if count < 14265:
-            #     count+=1
-            #     continued
-        
-            sm = str(i[1]).replace("Q", "#") ## Hashtags break some of our preprocessing scripts so we replace them with Qs to make life easier 
-            # print(sm)
             mol = Chem.MolFromSmiles(sm)
-            rt = torch.tensor([float(i[2])]) ## normalizing retention time
+            rt = torch.tensor([float(i[2])])  ## normalizing retention time
             # print(rt)
             index = i[0]
+
             col_meta = self.columndict[index]
-            # if count == 14269:
-            #     print(sm, rt)
-            # print(descriptors)
-
-
-            # descriptors = np.asarray(descriptors, dtype=np.float16)            
-            # # descriptors = np.pad(descriptors, (0, 100 - len(descriptors))) 
-            # descriptors = np.nan_to_num(descriptors, nan=0.0)
-            # descriptors = torch.tensor(descriptors, dtype=torch.float16)
 
             column_params = featurize_column(col_meta, index)
 
-            # global_feat = np.concatenate((column_params, descriptors))
 
             num_atoms = mol.GetNumAtoms()
             add_self_loop = False
@@ -410,12 +341,13 @@ class IRSpectraD(DGLDataset):
 
             features_gnode = False ## if you want a second global node
 
-
+            gnode = True
             if gnode:
                 src_list = list(np.full(num_atoms, num_atoms)) ## node pairs describing edges in heteograph - see DGL documentation
                 dst_list = list(np.arange(num_atoms))
                 features = torch.tensor([[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]], dtype=torch.float32)
                 total_features = features.repeat(num_atoms, 1)
+
                 g_nm = column_params ## custom encoding for the global node
                 # g_nm = global_feat #column_params ## custom encoding for the global node
                 unifatom.append(g_nm)
@@ -447,11 +379,16 @@ class IRSpectraD(DGLDataset):
 
             self.graphs.append(g)
             self.labels.append(rt)
+            # print(rt)
+            if torch.isnan(rt):
+                print(rt)
+                exit()
             self.smiles.append((sm, index))
             count+=1
             # gc.collect()
-            # if count == 100:
-        
+            # if count == 1000:
+            #     break
+
     def __getitem__(self, i):
         # print(i)
         return self.graphs[i], self.labels[i], self.smiles[i]
@@ -459,20 +396,17 @@ class IRSpectraD(DGLDataset):
     def __len__(self):
         return len(self.graphs)
 
-@register_dataset("HILIC_test")
+@register_dataset("HILIC_a")
 def create_customized_dataset():
 
     dataset = IRSpectraD()
     num_graphs = len(dataset)
 
-    train = 0.8
-    val = 0.1
-    test = 0.1
 
     return {
         "dataset": dataset,
-        "train_idx":  np.arange(0, num_graphs),#rand_train_idx,#np.arange(0, 4),#
-        "valid_idx": None,#
-        "test_idx": None, #
+        "train_idx":  np.arange(num_graphs),#rand_train_idx,#np.arange(0, 4),#
+        "valid_idx": None,
+        "test_idx": None,
         "source": "dgl" 
     }

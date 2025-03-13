@@ -131,15 +131,6 @@ def eval(args, use_pretrained, checkpoint_path=None, logger=None):
         #     for row in stack:
         #         writer.writerow(row)
         
-        y_ext = y_pred[-203:]
-        y_true_ext = y_true[-203:]
-        methodL_ext = methodL[-203:]
-        smilesL_ext = smilesL[-203:]
-
-        y_pred = y_pred[:-203]
-        y_true = y_true[:-203]
-        methodL = methodL[:-203]
-        smilesL = smilesL[:-203]
 
 
     # save predictions
@@ -163,105 +154,35 @@ def eval(args, use_pretrained, checkpoint_path=None, logger=None):
             mae = np.mean(np.abs(y_true - y_pred))
             logger.info(f"mae: {mae}")
         else: 
-            seconds = False
+            seconds = True
             if seconds:
                 y_pred *= 60
                 y_true *= 60
             ae = np.abs(y_true - y_pred)
-            mae = np.mean(ae) * 60 
-            rmse = math.sqrt(np.mean((y_true - y_pred) ** 2)) * 60
-            mse = np.mean((y_true - y_pred) ** 2) * 60
-            error = (y_true - y_pred) * 60
+            mae = np.mean(ae) 
+            rmse = math.sqrt(np.mean((y_true - y_pred) ** 2)) 
+            error = (y_true - y_pred) 
             m_error = np.mean(error) 
 
-            # print(y_true_ext[:10])
-            # print(y_ext[:10])
-            error_ext = np.abs(y_true_ext - y_ext)
-            error_103 = []
-            error_283 = []
-            error_375 = []
-            for i in range(len(error_ext)):
-                if methodL_ext[i] == '0103':
-                    error_103.append(error_ext[i])
-                    # print(methodL_ext[i], error_ext[i])
-                elif methodL_ext[i] == '0283':
-                    error_283.append(error_ext[i])
-                elif methodL_ext[i] == '0375':
-                    error_375.append(error_ext[i])
+            save = args.save_path
 
-            # for i in range(len(ae)):
-            #     if methodL[i] == '0103':
-            #         error_103.append(ae[i])
-            #     # print(methodL_ext[i], error_ext[i])
-            #     elif methodL[i] == '0283':
-            #         error_283.append(ae[i])
-            #     elif methodL[i] == '0375':
-            #         error_375.append(ae[i])
+            if save != 'None':
+                if not save.endswith('.csv'):
+                    raise ValueError("The save path must be a valid .csv file")
+                stack = np.column_stack((smilesL, methodL, y_true, y_pred, np.abs(y_true - y_pred)))
+                with open(save, 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(["SMILES", "Method", "True RT", "Predicted RT", "Absolute Error"])
+                    for row in stack:
+                        writer.writerow(row)
+                print("SAVED PREDICTIONS")
 
-            m_error_103 = np.mean(error_103)  * 60
-            m_error_283 = np.mean(error_283)  * 60
-            m_error_375 = np.mean(error_375) * 60
-
-            # mae_ext = np.mean(np.abs(y_true_ext - y_ext)) * 60
-            # rmse_ext = math.sqrt(np.mean((y_true_ext - y_ext) ** 2)) * 60
-            # mse_ext = np.mean((y_true_ext - y_ext) ** 2) * 60
+            logger.info(f"mae: {mae:.2f}")
+            logger.info(f"rmse: {rmse:.2f}")
+            logger.info(f"error: {m_error:.2f}")
 
 
-            # print("RMSE EXTERNAL: ", rmse_ext)
-            # print("MSE EXTERNAL: ", mse_ext)
-
-            logger.info(f"mae: {mae}")
-            logger.info(f"rmse: {rmse}")
-            logger.info(f"mse: {mse}")
-            logger.info(f"error: {m_error}")
-
-            logger.info(f"mae 103: {m_error_103}")
-            logger.info(f"mae 283: {m_error_283}")
-            logger.info(f"mae 375: {m_error_375}")
-            
-            ### Plotting ML Correlation Diagram
-            R2 = np.corrcoef(y_true, y_pred)[0, 1] ** 2
-            max_val = np.max([y_true, y_pred]) + 2
-            text = '$R^2$ = ' + str(np.round(R2, 2)) + '\nMAE = ' + str(np.round(mae, 2))+ ' sec' +  '\nRMSE = ' + str(np.round(rmse, 2)) + ' sec'
-            box = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-            plt.text(0.24, 0.8, text, transform=plt.gca().transAxes, fontsize=10, verticalalignment='top', bbox=box, horizontalalignment='center')
-            plt.scatter(y_true, y_pred, alpha=0.6, color='black', s=0.5)
-            plt.plot([0, max_val], [0, max_val], color='red',linestyle = 'dashed')
-            plt.xlabel('True RT / min')
-            plt.ylabel('Predicted RT / min')
-            plt.title('RT Prediction, Average Error: ' + str(np.round(mae, 2)) + ' seconds (MAE)')
-            plt.savefig('/home/cmkstien/Graphormer_RT/results/HILIC_ML_Correlation_Diagram.png', dpi=300)
-            plt.clf()
-            
-            ### Plotting Error Histogram
-            gen_histogram(error)
-            plt.savefig('/home/cmkstien/Graphormer_RT/results/HILIC_Error_Histogram.png', dpi=300)
-            plt.clf()
-            ###Plotting Error Against RT
-            plt.scatter(y_true, ae, alpha=0.5, s=0.5, color='black')
-            plt.xlabel('True RT / min')
-            plt.ylabel('MAE / min')
-            plt.title('MAE vs RT')
-            plt.savefig('/home/cmkstien/Graphormer_RT/results/HILIC_Error_vs_RT.png', dpi=300)
-            plt.clf()
-            ###Plotting Error Against Method
-            plt.figure(figsize=(40, 20))
-            arr = np.column_stack((methodL, ae))
-            df = pd.DataFrame(arr, columns=['Method', 'MAE'])
-            df['Method'] = df['Method'].astype(str)
-            df['MAE'] = df['MAE'].astype(float)
-            df = df.groupby('Method').mean()
-            df = df.reset_index()
-            df = df.sort_values('MAE')
-            plt.bar(df['Method'], df['MAE'])
-            print(df['Method'].shape, df['MAE'].shape)
-            plt.xticks(rotation=90)
-            plt.xlabel('Method')
-            plt.ylabel('MAE / min')
-            plt.title('MAE vs Method')
-            plt.savefig('/home/cmkstien/Graphormer_RT/results/HILIC_Error_vs_Method.png', dpi=300)
-            plt.clf()
-
+    
 
 def main():
     parser = options.get_training_parser()

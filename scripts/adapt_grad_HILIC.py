@@ -40,7 +40,6 @@ loc = '/home/cmkstien/Desktop/RT_data/filtered_not_ret_Jun24/'
 t_crit = 0
 
 
-
 if t_crit == 0: 
     t_crit = inflections[-1][0]
 
