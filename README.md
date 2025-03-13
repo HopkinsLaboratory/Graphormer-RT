@@ -101,12 +101,14 @@ The example/property_predicton/ folder contains scripts and dataloaders to a) pr
 
 >> bash RP.sh  
 
-HASHAHHAS
 for fully pretraining a model, assuming you've edited the dataloader
+
 >> bash finetune_RP.sh  
+
 for finetuning a model if you have put model weights in the right place and edited the dataloader
 
 Models can then be evaluated using the corresponding scripts in the graphormer/evaluate/. The flag '--save-dir' will allow you to save predictions alongside method data and SMILES codes. 
+
 >> bash evaluate_RP.sh  
 
 Pre-graph encoders are found in graphormer/modules/graphormer_layers.py
