@@ -99,17 +99,17 @@ Sample data for generating 'specialist' and 'generalist' models is found the sam
 
 The example/property_predicton/ folder contains scripts and dataloaders to a) pre-train a RP/HILIC model and b)finetune a pre-existing model to generate a specialist model. If you want to change the datasoure, you will need to edit code in the dataloader. Details for recommended hyperparameters are found in the main paper published in Analytical Chemistry.
 
->> bash RP.sh  
+>> bash ../../examples/property_prediction/RP.sh  
 
 for fully pretraining a model, assuming you've edited the dataloader
 
->> bash finetune_RP.sh  
+>> bash ../../examples/property_prediction/finetune_RP.sh  
 
 for finetuning a model if you have put model weights in the right place and edited the dataloader
 
 Models can then be evaluated using the corresponding scripts in the graphormer/evaluate/. The flag '--save-dir' will allow you to save predictions alongside method data and SMILES codes. 
 
->> bash evaluate_RP.sh  
+>> bash ../../graphormer/evaluate_RP.sh  
 
 Pre-graph encoders are found in graphormer/modules/graphormer_layers.py
 
