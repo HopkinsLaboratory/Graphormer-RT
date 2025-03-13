@@ -1,7 +1,6 @@
 <img src="GraphicalAbstract.png" width=100%> 
 
-Code to accompany manuscript from https://pubs.acs.org/doi/10.1021/acs.analchem.4c05859
-
+**# [From Reverse Phase Chromatography to HILIC: Graph Transformers Power Method-Independent Machine Learning of Retention Times](https://pubs.acs.org/doi/10.1021/acs.analchem.4c05859)**
 
 # General
 Graphormer-RT is an extension to the Graphormer package, with [documentation](https://graphormer.readthedocs.io/), and the original code on [Github](https://github.com/microsoft/Graphormer/) with additional usage examples. If you use this code, __please cite our work that led to the developement of this platform and the original Graphormer__
