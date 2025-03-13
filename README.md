@@ -1,5 +1,7 @@
+<img src="GraphicalAbstract.png" width=100%> 
 
 # **[From Reverse Phase Chromatography to HILIC: Graph Transformers Power Method-Independent Machine Learning of Retention Times](https://pubs.acs.org/doi/10.1021/acs.analchem.4c05859)**
+
 
 
 # General
