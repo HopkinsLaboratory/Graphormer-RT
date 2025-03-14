@@ -4,7 +4,7 @@
 
 
 # General
-Graphormer-RT is an extension to the Graphormer package, with [documentation](https://graphormer.readthedocs.io/), and the original code on [Github](https://github.com/microsoft/Graphormer/) with additional usage examples. If you use this code, __please cite our work that led to the developement of this platform and the original Graphormer__
+Graphormer-RT is an extension to the Graphormer package, with [documentation](https://graphormer.readthedocs.io/), and the original code on [Github](https://github.com/microsoft/Graphormer/) with additional usage examples. If you use this code, __please cite our work that led to the development of this platform and the original Graphormer__
 
 
 @article{Stienstra2025,
@@ -130,6 +130,4 @@ If you require further assistance with developing your own model or have any que
 
 - cmkstien@uwaterloo.ca
 - scott.hopkins@uwaterloo.ca 
-
-
 
