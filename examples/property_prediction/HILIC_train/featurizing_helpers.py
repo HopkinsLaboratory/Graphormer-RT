@@ -109,9 +109,9 @@ def get_all_descriptor_names():
     
         return final_descriptors, len_RDKit, len_mordred, duplicate_indeces
 
-distributions_path = '/home/cmkstien/Graphormer_RT_extra/CDFs/descriptorCDFs.json'
-with open(distributions_path) as dp:
-    distributions = json.load(dp)
+# distributions_path = '/home/cmkstien/Graphormer_RT_extra/CDFs/descriptorCDFs.json'
+# with open(distributions_path) as dp:
+#     distributions = json.load(dp)
 # This code, given the list of SMILES strings allows to compute the descriptors in RDKit and mordred for given molecules. 
 # SMILES_address and json_address are file locations from which the program pulls data.
 # output_address is file location and file format to which the program will save the results.
