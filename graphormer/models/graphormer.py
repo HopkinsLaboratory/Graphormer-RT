@@ -326,14 +326,14 @@ class GraphormerEncoder(FairseqEncoder):
                         latent_size, args.num_classes,bias=True)
             # self.embed_out =nn.Linear(
             #     last, args.num_classes,bias=True)#+ kernel - 1, )
-            # nn.init.xavier_normal_(self.embed_out.weight)
-            # nn.init.xavier_normal_(self.mu_out.weight)
+            nn.init.xavier_normal_(self.embed_out.weight)
+            nn.init.xavier_normal_(self.mu_out.weight)
 
-            # self.embed_out.bias.data = torch.ones(args.num_classes) * 100000
-            # self.embed_out.bias.requires_grad = True
+            self.embed_out.bias.data = torch.ones(args.num_classes) * 100000
+            self.embed_out.bias.requires_grad = True
 
-            # self.mu_out.bias.data = torch.ones(args.num_classes) * 1000000
-            # self.mu_out.bias.requires_grad = True
+            self.mu_out.bias.data = torch.ones(args.num_classes) * 1000000
+            self.mu_out.bias.requires_grad = True
 
 
         self.conv = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=kernel)
