@@ -90,6 +90,15 @@ processed column metada generated from RepoRT with the following header:
 
 Some of these parameters (like void volume of HSMB/Tanaka parameters), are calculated directly using RepoRT scripts. Not all this data is given to our model (see main script), and replacing values that are not present with a '0' will allow models to learn. See publication for more details.
 
+# Custom Gradients (April 7th, 2025)
+
+Our model uses all shown in the following figure in our encoding schemes 
+<img src="0078_gradient.png" width=100%> 
+
+(Along with several calculated column parameters from the RepoRT workflow)
+
+We have built a script (scripts/update_dictionary_new_method.py) that has a template for adding a new method to our dictionary to facilitate the addition of new gradients for downstream finetuning applications
+
 # Usage
 Sample data for generating 'specialist' and 'generalist' models is found the sample_data folder and demonstrates the intended structure. 
 
