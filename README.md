@@ -61,6 +61,18 @@ We have developed a Docker Image to make installation and management of environm
 - Docker: https://docs.docker.com/get-docker/
 - NVIDIA GPU drivers: https://www.nvidia.com/Download/index.aspx
 - NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+
+This can be achieved by running the following commands:
+```bash
+docker --version
+```
+```bash
+nvidia-smi
+```
+```bash
+nvidia-container-cli --version
+```
+
 2.	Save the Dockerfile (the name should be “Dockerfile”).
 3.	Open a terminal in the same folder as Dockerfile.
 4.	Build the Docker image by running:
