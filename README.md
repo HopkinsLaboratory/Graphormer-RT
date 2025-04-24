@@ -79,17 +79,13 @@ nvidia-container-cli --version
 		docker build --no-cache -t graphormer-rt .
 5.	Run the Docker container with GPU support:
 docker run -it --gpus all graphormer-rt bash
-6.	Inside the container, navigate to the example directory:
-cd /workspace/Graphormer-RT/examples/property_prediction
-7.	Make the example script executable:
+6.	Inside the container, navigate to the example directory, make the example script executable, and run the example script:
 ```bash
-chmod +x HILIC.sh 
-```
-8.	Run the example script:
-```bash 
+cd /workspace/Graphormer-RT/examples/property_prediction
+chmod +x HILIC.sh  
 ./HILIC.sh
 ```
-9.	If it runs for an epoch and saves .pt files, you know you’ve succeeded. 
+7.	If it runs for an epoch and saves .pt files, you know you’ve succeeded. 
 
 A beginner's guide to Docker usage can be found [HERE](https://docker-curriculum.com/)
 
