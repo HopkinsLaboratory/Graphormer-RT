@@ -82,9 +82,13 @@ docker run -it --gpus all graphormer-rt bash
 6.	Inside the container, navigate to the example directory:
 cd /workspace/Graphormer-RT/examples/property_prediction
 7.	Make the example script executable:
+```bash
 chmod +x HILIC.sh 
-8.	Run the example script: 
+```
+8.	Run the example script:
+```bash 
 ./HILIC.sh
+```
 9.	If it runs for an epoch and saves .pt files, you know you’ve succeeded. 
 
 A beginner's guide to Docker usage can be found [HERE](https://docker-curriculum.com/)
