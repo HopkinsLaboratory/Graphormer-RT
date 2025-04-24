@@ -53,6 +53,39 @@ url={https://openreview.net/forum?id=OeWooOxFwDa}
 
 
 # Installation
+## Docker [April 2025]
+We have developed a Docker Image to make installation and management of environments easier for Graphormer-RT. Installation Instructions are as follows
+
+📦 How to Install and Run Graphormer-RT Using Docker Image
+1.	Install the following software (if not already installed):
+o	Docker: https://docs.docker.com/get-docker/
+o	NVIDIA GPU drivers: https://www.nvidia.com/Download/index.aspx
+o	NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+2.	Save the Dockerfile (the name should be “Dockerfile”).
+3.	Open a terminal in the same folder as Dockerfile.
+4.	Build the Docker image by running:
+		docker build --no-cache -t graphormer-rt .
+5.	Run the Docker container with GPU support:
+docker run -it --gpus all graphormer-rt bash
+6.	Inside the container, navigate to the example directory:
+cd /workspace/Graphormer-RT/examples/property_prediction
+7.	Make the example script executable:
+chmod +x HILIC.sh 
+8.	Run the example script: 
+./HILIC.sh
+9.	If it runs for an epoch and saves .pt files, you know you’ve succeeded. 
+
+A beginner's guide to Docker usage can be found [HERE](https://docker-curriculum.com/)
+
+- To Upload files (e.g., new data) to the docker container, use:
+```bash
+docker cp ./local_file.txt container_id:/app/local_file.txt
+```
+- To Download files (checkpoints, results) from this container, use:
+```bash
+docker cp <container_id>:<path_inside_container> <path_on_host> 
+```
+## Old Instructions [Before April 2025]
 We highly recommend following the [installation guide](https://graphormer.readthedocs.io/), though we will suggest a few additional notes to make things easier:
 - Install fairseq directly from the [Github repository](https://github.com/facebookresearch/fairseq), "pip install -e /path/to/folder" Make sure that you're using an old enough version that's compatible with Graphormer
 - Make sure that you're using an old enough version of PyTorch Geometric and the DGL libraries (there's a lookup table for compatibility on their website). These are the things that we found broke the most frequently, and the errors you get don't always tell you that it's these packages. If there are problems inheriting abstract data classes, just modify the class methods to include whatever class methods (e.g., "\_\_len\_\_"), in your install and it should work.
