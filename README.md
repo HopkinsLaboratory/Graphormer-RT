@@ -76,9 +76,13 @@ nvidia-container-cli --version
 2.	Save the Dockerfile (the name should be “Dockerfile”).
 3.	Open a terminal in the same folder as Dockerfile.
 4.	Build the Docker image by running:
-		docker build --no-cache -t graphormer-rt .
+```bash
+docker build --no-cache -t graphormer-rt .
+```
 5.	Run the Docker container with GPU support:
+```bash
 docker run -it --gpus all graphormer-rt bash
+```
 6.	Inside the container, navigate to the example directory, make the example script executable, and run the example script:
 ```bash
 cd /workspace/Graphormer-RT/examples/property_prediction
