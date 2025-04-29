@@ -1,5 +1,5 @@
 # Use an NVIDIA CUDA runtime image that provides the necessary libraries (e.g. cuBLAS)
-FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 
 # Prevent tzdata from prompting during installation and set timezone
 ENV DEBIAN_FRONTEND=noninteractive
@@ -49,7 +49,7 @@ RUN pip install --editable ./
 # Install dependencies
 
 # Install DGL using the appropriate wheel URL (for torch-2.1 and cu118)
-RUN pip install dgl==1.1.3+cu118 -f https://data.dgl.ai/wheels/cu118/repo.html
+RUN pip install dgl==1.1.3+${CUDA} -f https://data.dgl.ai/wheels/${CUDA}/repo.html
 
 # Install torch-geometric; here we pin a version that works with our setup (e.g. 2.4.0)
 RUN pip install torch-geometric==2.4.0
@@ -61,7 +61,6 @@ RUN pip install torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-2.1
 RUN pip install ogb==1.3.2
 RUN pip install rdkit-pypi==2022.9.5
 RUN pip install matplotlib
-# RUN pip install googledrivedownloader==0.4
 RUN pip install numpy==1.23
 RUN pip install dgllife==0.3.2
 RUN pip install mordred==1.2.0
